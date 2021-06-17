@@ -1,0 +1,19 @@
+{
+  "name": "fetchpoints",
+  "version": "1.0.0",
+  "description": "A simple application for processing points.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Louis-SE/FetchPoints.git"
+  },
+  "author": "Louis Rivera",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Louis-SE/FetchPoints/issues"
+  },
+  "homepage": "https://github.com/Louis-SE/FetchPoints#readme"
+}
