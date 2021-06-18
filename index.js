@@ -2,7 +2,7 @@ const { Console } = require("console");
 const http = require("http");
 
 const datastore = require("./datastore")
-var storage = datastore.storage;
+const storage = datastore.storage;
 
 const hostname = 'localhost';
 const port = 8080;
@@ -26,6 +26,7 @@ const server = http.createServer(function(request, response) {
                 try {
                     const jsonData = JSON.parse(jsonString);
                     console.log("PUT method detected, parsing PUT data");
+                    storage.spendPoints(jsonData);
                 }
                 catch(e) {
                     console.log(e);
