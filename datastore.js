@@ -1,4 +1,5 @@
 let storage = {
+    payerMap : new Map(),
     transactions : [],
     
     addTransaction : function (transaction) {
@@ -10,15 +11,6 @@ let storage = {
         else if(pointValue < 0) {
             this.spendPoints(transaction, transaction.payer);
         }
-    },
-
-    sortTransactions : function () {
-        this.transactions.sort((transactionA, transactionB) => {
-            // The transactions are sorted with the newest timestamp first.
-            // When the transactions array is iterated over, it'll be in reverse
-            // so that transactions can be removed when the transaction balance hits 0.
-            return new Date(transactionB.timestamp) - new Date(transactionA.timestamp);
-        });
     },
 
     getPayerPoints: function () {
