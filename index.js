@@ -22,6 +22,7 @@ const server = http.createServer(function(request, response) {
                 serverMessage = storage.getPayerPoints();
                 break;
 
+            // Update a resource
             case 'PUT':
                 try {
                     const jsonData = JSON.parse(jsonString);
@@ -31,21 +32,21 @@ const server = http.createServer(function(request, response) {
                 catch(e) {
                     console.log(e);
                     response.statusCode(400);
-                    serverMessage = `error : ${e.message}`;
+                    serverMessage = {error : e.message};
                 }
                 break;
 
+            // Create a resource
             case 'POST':
                 try {
                     const jsonData = JSON.parse(jsonString);
                     console.log("POST method detected, parsing POST data");
-                    storage.addTransaction(jsonData);
-                    serverMessage = `transaction : sucessful`
+                    serverMessage = storage.addTransaction(jsonData);
                 }
                 catch(e) {
                     console.log(e);
                     response.statusCode(400);
-                    serverMessage = `error : ${e.message}`;                  
+                    serverMessage = {error : e.message};              
                 }
                 break;
 
