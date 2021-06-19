@@ -27,7 +27,7 @@ const server = http.createServer(function(request, response) {
                 try {
                     const jsonData = JSON.parse(jsonString);
                     console.log("PUT method detected, parsing PUT data");
-                    storage.spendPoints(jsonData);
+                    serverMessage = storage.spendPoints(jsonData);
                 }
                 catch(e) {
                     console.log(e);

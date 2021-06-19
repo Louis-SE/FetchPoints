@@ -2,7 +2,6 @@ function Payer(name) {
     this.name = name;
     this.transactions = [];
 
-    // The combincation
     this.pointBalance = 0;
 
     // The point total from all active transactions with a positive balance.
@@ -28,13 +27,13 @@ function Payer(name) {
 
     this.addTransaction = function (transaction) {
         const requestedPoints = parseInt(transaction.points);
-        if(requestedPoints < 0 && (this.pointBalance + requestedPoints < 0)) {
+        if(requestedPoints < 0 && (this.updatePointBalance() + requestedPoints < 0)) {
             // This would mean a negative transaction is being requested and there aren't enough 
             // points remaining to stop the payer's balance from going negative.
             return false;
         }
         else if(requestedPoints < 0) {
-            // Add the negative points to the sum of tracked negative points that aren't yet processed.
+            // Add the negative points to the sum of all negative points that aren't yet processed.
             this.negativePointBalance += Math.abs(requestedPoints);
         }
         else {
@@ -44,6 +43,29 @@ function Payer(name) {
         }
         this.updatePointBalance();
         return true;
+    }
+
+    this.resolveNegativeTransactions() = function() {
+        // Instead of tracking negative POST request transactions in their entirety, only the amount the the 
+        // transaction was for is tracked. When the user is finally ready to spend points, the negative
+        // values are resolved by canceling out an equal amount of positive points in transactions, starting
+        // with the oldest transactions. In this way, older transactions can be added with POST requests
+        // and the pending negative transactions will not affect any positive ones until a spending
+        // request is made.
+        for(var i = this.transactions.length - 1; i >= 0; i--) {
+            if(this.negativePointBalance === 0) break;
+            var pointsInTransaction = parseInt(transaction[i].points);
+            if(this.negativePointBalance >= pointsInTransaction) {
+                this.negativePointBalance -= pointsInTransaction;
+                transactions.pop();
+            }
+            else {
+                pointsInTransaction -= this.negativePointBalance;
+                this.negativePointBalance = 0;
+                transaction[i].points = pointsInTransaction;
+            }
+        }
+        this.updatePointBalance();
     }
 }
 
