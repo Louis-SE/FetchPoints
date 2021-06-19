@@ -31,7 +31,6 @@ const server = http.createServer(function(request, response) {
                 }
                 catch(e) {
                     console.log(e);
-                    response.statusCode(400);
                     serverMessage = {error : e.message};
                 }
                 break;
@@ -45,7 +44,6 @@ const server = http.createServer(function(request, response) {
                 }
                 catch(e) {
                     console.log(e);
-                    response.statusCode(400);
                     serverMessage = {error : e.message};              
                 }
                 break;
@@ -53,7 +51,6 @@ const server = http.createServer(function(request, response) {
             default: 
                 serverMessage = 'error : A proper method wasnt supplied method was supplied';
                 console.log(serverMessage);
-                response.statusCode(405);
                 break;
         }
         response.setHeader('Content-Type', 'application/json');

@@ -45,7 +45,7 @@ function Payer(name) {
         return true;
     }
 
-    this.resolveNegativeTransactions() = function() {
+    this.resolveNegativeTransactions = function() {
         // Instead of tracking negative POST request transactions in their entirety, only the amount the the 
         // transaction was for is tracked. When the user is finally ready to spend points, the negative
         // values are resolved by canceling out an equal amount of positive points in transactions, starting
@@ -54,15 +54,17 @@ function Payer(name) {
         // request is made.
         for(var i = this.transactions.length - 1; i >= 0; i--) {
             if(this.negativePointBalance === 0) break;
-            var pointsInTransaction = parseInt(transaction[i].points);
+            var pointsInTransaction = parseInt(this.transactions[i].points);
             if(this.negativePointBalance >= pointsInTransaction) {
                 this.negativePointBalance -= pointsInTransaction;
-                transactions.pop();
+                this.positivePointBalance -= pointsInTransaction;
+                this.transactions.pop();
             }
             else {
                 pointsInTransaction -= this.negativePointBalance;
+                this.positivePointBalance -=  this.negativePointBalance;
                 this.negativePointBalance = 0;
-                transaction[i].points = pointsInTransaction;
+                this.transactions[i].points = pointsInTransaction;
             }
         }
         this.updatePointBalance();
