@@ -4,8 +4,13 @@ const http = require("http");
 const datastore = require("./datastore")
 const storage = datastore.storage;
 
-const hostname = 'localhost';
-const port = 8080;
+
+// This allows setting the IP and Port through the command line.
+const hostconfig = require("./hostconfig");
+const myArgs = process.argv.slice(2);
+const hostname = hostconfig.setServerHostname(myArgs);
+const port = hostconfig.setServerPort(myArgs);
+
 var displayStartServerMessage = true;
 const server = http.createServer(function(request, response) {
     let serverMessage = "Default server message";
