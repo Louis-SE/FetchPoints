@@ -1,9 +1,10 @@
 const { Console } = require("console");
 const http = require("http");
 
+// This is the file that will track and process payer data and
+// requests done to that data.
 const datastore = require("./datastore")
 const storage = datastore.storage;
-
 
 // This allows setting the IP and Port through the command line.
 const hostconfig = require("./hostconfig");
@@ -13,6 +14,8 @@ const port = hostconfig.setServerPort(myArgs);
 
 var displayStartServerMessage = true;
 const server = http.createServer(function(request, response) {
+    // Server message will contain the response that gets sent
+    // back to the client that is making the requst.
     let serverMessage = "Default server message";
     let jsonString = ''; 
 
@@ -22,16 +25,17 @@ const server = http.createServer(function(request, response) {
 
     request.on('end', function() {
         switch(request.method) {
+            // GET is used to get the current balance point balance for each payer.
             case 'GET':
-                console.log("GET method detected");
+                console.log("GET request detected");
                 serverMessage = storage.getPayerPoints();
                 break;
 
-            // Update a resource
+            // PUT is used to spend points that have accumulated in the account.
             case 'PUT':
                 try {
                     const jsonData = JSON.parse(jsonString);
-                    console.log("PUT method detected, parsing PUT data");
+                    console.log("PUT request detected, parsing request data");
                     serverMessage = storage.spendPoints(jsonData);
                 }
                 catch(e) {
@@ -40,11 +44,11 @@ const server = http.createServer(function(request, response) {
                 }
                 break;
 
-            // Create a resource
+            // POST is used to add transactions from payers which allow the account to accumulate points.
             case 'POST':
                 try {
                     const jsonData = JSON.parse(jsonString);
-                    console.log("POST method detected, parsing POST data");
+                    console.log("POST request detected, parsing request data");
                     serverMessage = storage.addTransaction(jsonData);
                 }
                 catch(e) {
@@ -53,9 +57,13 @@ const server = http.createServer(function(request, response) {
                 }
                 break;
 
+            // At this point, either GET, PUT, or POST would not have been detected.
             default: 
-                serverMessage = 'error : A proper method wasnt supplied method was supplied';
-                console.log(serverMessage);
+                let errorResult = {};
+                errorResult.error = "Unsupported Operation";
+                errorResult.message = "The request operation that was supplied is not supported by this application";
+                errorResult.operation = request.method;
+                serverMessage = errorResult;
                 break;
         }
         response.setHeader('Content-Type', 'application/json');

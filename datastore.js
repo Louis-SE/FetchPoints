@@ -101,6 +101,7 @@ const storage = {
 
             var transactionPoints = parseInt(oldestTransaction.points);
 
+            // This implies that the current oldest transaction can be fully consumed and forgotten.
             if(points >= transactionPoints) {
                 points -= transactionPoints;
                 this.trackPointDeduction(deductions, oldestPayer.name, transactionPoints);
@@ -110,6 +111,8 @@ const storage = {
                     payers.pop();
                 }
             }
+            // This implies that the current points left to spend aren't enough to consume the full transaction
+            // so the transaction is partially consumed, and the remained is saved.
             else {
                 this.trackPointDeduction(deductions, oldestPayer.name, points);
                 transactionPoints -= points;
@@ -122,9 +125,11 @@ const storage = {
         return deductions;
     },
 
-
-
     trackPointDeduction: function(deductions, amountPayer, amount) {
+        // This function helps build the message returned when points are spent.
+        // When point values are deducted from the same payer multiple times,
+        // instead of showing up as different instances of paying, this consolidates
+        // those payments into one lump value for that payer.
         let deductionsContainsPayer = false;
         for(let i = 0; i < deductions.length; i++) {
             if(deductions[i].payer === amountPayer) {

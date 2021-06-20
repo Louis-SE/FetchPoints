@@ -1,8 +1,8 @@
 function Payer(name) {
     this.name = name;
+    
+    // An array of all pending, unprocessed transactions.
     this.transactions = [];
-
-    this.pointBalance = 0;
 
     // The point total from all active transactions with a positive balance.
     this.positivePointBalance = 0;
@@ -11,6 +11,7 @@ function Payer(name) {
     // represented in this class membet;
     this.negativePointBalance = 0;
 
+    this.pointBalance = 0;
     this.updatePointBalance = function() {
         this.pointBalance = this.positivePointBalance - this.negativePointBalance;
         return this.pointBalance;
