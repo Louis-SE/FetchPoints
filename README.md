@@ -105,3 +105,18 @@ Example response from the server:
     }
 ]
 ```
+
+
+Example response to the server:
+```
+{ "points": 3000 }
+```
+
+Example response from the server: 
+```
+{
+    "error": "Not Enough Points",
+    "message": "There are not enough points in this account to process this request",
+    "currentPointBalance": 1000
+}
+```
