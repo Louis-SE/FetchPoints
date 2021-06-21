@@ -12,7 +12,7 @@ const myArgs = process.argv.slice(2);
 const hostname = hostconfig.setServerHostname(myArgs);
 const port = hostconfig.setServerPort(myArgs);
 
-var displayStartServerMessage = true;
+let displayStartServerMessage = true;
 const server = http.createServer(function(request, response) {
     // Server message will contain the response that gets sent
     // back to the client that is making the requst.
