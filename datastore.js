@@ -27,7 +27,7 @@ const storage = {
     },
 
     getPayerPoints: function () {
-        var allPoints = {};
+        let allPoints = {};
         for(const [name, payer] of payerMap) {
             // This will update point values before adding them to the returned JSON string.
             // The balance values should be correct at this point, but in case updatePoint balance
@@ -38,7 +38,7 @@ const storage = {
     },
     
     spendPoints: function (transaction) {
-        var pointsToSpend = parseInt(transaction.points);
+        let pointsToSpend = parseInt(transaction.points);
         if(pointsToSpend <= 0) {
             const errorResult = {};
             errorResult.error = "Invalid Point Amount";
@@ -60,7 +60,7 @@ const storage = {
     },
 
     getPointsTotal: function() {
-        var points = 0;
+        let points = 0;
         for(const [name, payer] of payerMap) {
             points += payer.updatePointBalance();
         }
@@ -99,7 +99,7 @@ const storage = {
             const oldestPayer = payers[payers.length - 1];
             const oldestTransaction = oldestPayer.transactions[oldestPayer.transactions.length - 1];
 
-            var transactionPoints = parseInt(oldestTransaction.points);
+            let transactionPoints = parseInt(oldestTransaction.points);
 
             // This implies that the current oldest transaction can be fully consumed and forgotten.
             if(points >= transactionPoints) {
