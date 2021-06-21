@@ -4,18 +4,18 @@ const defaultPort = 8080;
 // Retrieves a usable hostname from the command line args.
 // If a proper hostname was not entered in the command line, the default hostname is used.
 exports.setServerHostname = function(userArgs) {
-    var issueWithHostnameFound = false;
+    let issueWithHostnameFound = false;
     if(userArgs.length >= 1) {
         // Potential host name would need to have 4 elements after the call to split for it to be a valid IP address.
-        var potentialHostname = userArgs[0].split('.');
+        let potentialHostname = userArgs[0].split('.');
         
         if(potentialHostname.length == 4) {
-            for(var i = 0; i < potentialHostname.length; i++) {
+            for(let i = 0; i < potentialHostname.length; i++) {
                 // isNaN considers empty strings to be numbers, which made hostnames such as "127..."
                 // register as valid. The second clause was added to this if to check that the number entered
                 // by the user has characters in it.
                 if(!isNaN(potentialHostname[i]) && !(potentialHostname[i].length === 0)) {
-                    var ipBlock = parseInt(potentialHostname[i]);
+                    let ipBlock = parseInt(potentialHostname[i]);
                     if(ipBlock < 0 || ipBlock > 255) {
                         issueWithHostnameFound = true;
                     }
@@ -38,10 +38,10 @@ exports.setServerHostname = function(userArgs) {
 // Retrieves a usable port from the command line args.
 // If a proper port was not entered in the command line, the default port is used.
 exports.setServerPort = function(userArgs) {
-    var currentPort = defaultPort;
+    let currentPort = defaultPort;
 
     if(userArgs.length >= 2 && !isNaN(userArgs[1])) {
-        var potentialPort = parseInt(userArgs[1]);
+        let potentialPort = parseInt(userArgs[1]);
         // The potentialPort is only used if its inside the acceptable range of port values (0 - 65535).
         if(potentialPort >= 0 && potentialPort <= 65535) {
             currentPort = potentialPort;
