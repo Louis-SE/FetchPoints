@@ -53,9 +53,9 @@ function Payer(name) {
         // with the oldest transactions. In this way, older transactions can be added with POST requests
         // and the pending negative transactions will not affect any positive ones until a spending
         // request is made.
-        for(var i = this.transactions.length - 1; i >= 0; i--) {
+        for(let i = this.transactions.length - 1; i >= 0; i--) {
             if(this.negativePointBalance === 0) break;
-            var pointsInTransaction = parseInt(this.transactions[i].points);
+            let pointsInTransaction = parseInt(this.transactions[i].points);
             if(this.negativePointBalance >= pointsInTransaction) {
                 this.negativePointBalance -= pointsInTransaction;
                 this.positivePointBalance -= pointsInTransaction;
